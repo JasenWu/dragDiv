@@ -11,8 +11,12 @@
   <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 
   <style>
-    body {
-      font-size: 84%;
+    body,
+    ul,
+    li,
+    ol {
+      padding: 0;
+      margin: 0;
     }
 
     .dustbin {
@@ -95,7 +99,10 @@
 </head>
 
 <body>
-
+  <h3 class="text-center">
+    请尝试拖拽下图中的色块
+  </p>
+  <br />
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 panel-wrap" title="拖拽我" draggable="true">
@@ -145,9 +152,14 @@
   var eleDustbin = $(".dustbin")[0],
     eleDrags = $(".panel-wrap"),
     lDrags = eleDrags.length,
-    moveBtn = '<div class="resize-handle"></div>',
+    eleDragIndex = 0, //拖拽元素的索引
+    targetIndex = 0, //目标元素的索引
+    moveBtn = '<div class="resize-handle" draggable="true"></div>',
     eleDrag = null;
 
+  Number.prototype.toPercent = function() {
+    return (Math.round(this * 100) / 100).toFixed(2) + '%';
+  }
 
 
   function getMoveBtn(parent) {
@@ -168,9 +180,9 @@
       console.log("csswidth", $(this).css("width", "20%"));
     };
 
-    $(eleDrags[i]).delegate(".resize-handle", "mousedown", function(e) {
-      console.log(e);
-    });
+
+
+
 
     eleDrags[i].onmouseover = function() { /*拖拽元素被选择*/
       var isHave = $(this).find(".resize-handle").length >= 1 ? true : false;
@@ -194,6 +206,8 @@
       ev.dataTransfer.setData("text", ev.target.innerHTML);
       ev.dataTransfer.setDragImage(ev.target, 0, 0);
       eleDrag = ev.target;
+      eleDragIndex = $(this).index();
+      console.log("eleDragIndex", eleDragIndex);
       return true;
     };
     eleDrags[i].ondragend = function(ev) { /*拖拽元素被放开*/
@@ -211,7 +225,10 @@
 
     eleDrags[i].ondrop = function(ev) { /*松开了拖拽元素*/
       console.log("this index", $(this).index());
-      if (eleDrag) {
+      targetIndex = $(this).index();
+      if (eleDrag && targetIndex > eleDragIndex) {
+        $(this).after(eleDrag);
+      } else {
         $(this).before(eleDrag);
       }
       this.style.color = "#000000";

@@ -4,7 +4,6 @@ HTML5提供专门的拖拽与拖放的API，这里提供给大家一个例子，
 ### 二、相关重点
 -DataTransfer 对象：退拽对象用来传递的媒介，使用一般为Event.dataTransfer。
 -draggable 属性：就是标签元素要设置draggable=true，否则不会有效果，例如：
-
 ···
 <div title="拖拽我" draggable="true">列表1</div>
 ···

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="Cache" content="no-cache">
+  <title>东风日产车盾管理系统</title>
+  <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+  <style>
+    body {
+      font-size: 84%;
+    }
+
+    .dustbin {
+      width: 100px;
+      height: 260px;
+      line-height: 1.4;
+      background-color: gray;
+      font-size: 36px;
+      font-family: "微软雅黑", "Yahei Mono";
+      text-align: center;
+      text-shadow: -1px -1px #bbb;
+      float: left;
+    }
+
+    .dragbox {
+      width: 500px;
+      padding-left: 20px;
+      float: left;
+    }
+
+    .draglist {
+      padding: 10px;
+      margin-bottom: 5px;
+      border: 2px dashed #ccc;
+      background-color: #eee;
+      cursor: move;
+    }
+
+    .draglist:hover {
+      border-color: #cad5eb;
+      background-color: #f0f3f9;
+    }
+
+    .dragremind {
+      padding-top: 2em;
+      clear: both;
+    }
+
+    .panel-wrap h4 {
+      background: gray;
+      color: white;
+      cursor: move;
+    }
+
+    .panel-1,
+    .panel-2,
+    .panel-3,
+    .panel-4 {
+      position: relative;
+    }
+
+    .panel-1 {
+      background-color: red;
+    }
+
+    .panel-2 {
+      background-color: green;
+    }
+
+    .panel-3 {
+      background-color: yellow;
+    }
+
+    .panel-4 {
+      background-color: blue;
+    }
+
+    .resize-handle {
+      width: 5px;
+      height: 100%;
+      background: black;
+      cursor: ew-resize;
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6 panel-wrap" title="拖拽我" draggable="true">
+        <div class="panel-1 panel-div">
+          <h4>top-left</h4>
+          <section>
+            top-left
+          </section>
+
+        </div>
+
+      </div>
+      <div class="col-md-6 panel-wrap" title="拖拽我" draggable="true">
+        <div class="panel-2 panel-div">
+          <h4>top-right</h4>
+          <section>
+            top-right
+          </section>
+        </div>
+
+      </div>
+      <div class="col-md-6 panel-wrap" title="拖拽我" draggable="true">
+        <div class="panel-3 panel-div">
+          <h4>bottom-left</h4>
+          <section>
+            bottom-left
+          </section>
+        </div>
+
+      </div>
+      <div class="col-md-6 panel-wrap" title="拖拽我" draggable="true">
+        <div class="panel-4 panel-div">
+          <h4>bottom-right</h4>
+          <section>
+            bottom-right
+          </section>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+  </div>
+
+</body>
+<script>
+  var eleDustbin = $(".dustbin")[0],
+    eleDrags = $(".panel-wrap"),
+    lDrags = eleDrags.length,
+    moveBtn = '<div class="resize-handle"></div>',
+    eleDrag = null;
+
+
+
+  function getMoveBtn(parent) {
+    var isHave = parent.find(".resize-handle").length >= 1 ? true : false;
+    if (isHave) {
+      return parent.find(".resize-handle");
+    } else {
+      return null;
+    }
+  }
+  for (var i = 0; i < lDrags; i++) {
+
+    eleDrags[i].onclick = function(e) { /*拖拽元素被选择*/
+      var offset = $(this).offset();
+      var width = $(this).width();
+      console.log("width", width, e);
+      console.log("offset", offset);
+      console.log("csswidth", $(this).css("width", "20%"));
+    };
+
+    $(eleDrags[i]).delegate(".resize-handle", "mousedown", function(e) {
+      console.log(e);
+    });
+
+    eleDrags[i].onmouseover = function() { /*拖拽元素被选择*/
+      var isHave = $(this).find(".resize-handle").length >= 1 ? true : false;
+      if (!isHave) { /*没有拖拽按钮，则添加*/
+        $(this).find(".panel-div").append(moveBtn);
+      }
+    };
+
+    eleDrags[i].onmouseleave = function() { /*拖拽元素被选择*/
+      var isHave = $(this).find(".resize-handle").length >= 1 ? true : false;
+      if (isHave) { /*没有拖拽按钮，则添加*/
+        $(this).find(".resize-handle").remove();
+      }
+    };
+
+    eleDrags[i].onselectstart = function() { /*拖拽元素被选择*/
+      return false;
+    };
+    eleDrags[i].ondragstart = function(ev) { /*拖拽元素被开始移动*/
+      ev.dataTransfer.effectAllowed = "move";
+      ev.dataTransfer.setData("text", ev.target.innerHTML);
+      ev.dataTransfer.setDragImage(ev.target, 0, 0);
+      eleDrag = ev.target;
+      return true;
+    };
+    eleDrags[i].ondragend = function(ev) { /*拖拽元素被放开*/
+      ev.dataTransfer.clearData("text");
+      eleDrag = null;
+      return false
+    };
+    eleDrags[i].ondragover = function(ev) { /*拖拽元素变成了目标元素*/
+      ev.preventDefault();
+      return true;
+    };
+    eleDrags[i].ondragenter = function(index) { /*目标元素上移入了拖拽元素*/
+      console.log("this index", $(this).index());
+    };
+
+    eleDrags[i].ondrop = function(ev) { /*松开了拖拽元素*/
+      console.log("this index", $(this).index());
+      if (eleDrag) {
+        $(this).before(eleDrag);
+      }
+      this.style.color = "#000000";
+      return false;
+    };
+  }
+</script>
+
+</html>

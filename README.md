@@ -1,13 +1,13 @@
 # dragDiv
-##一、写在前面
+### 一、写在前面
 HTML5提供专门的拖拽与拖放的API，这里提供给大家一个例子，供参考。
-##二、相关重点
+### 二、相关重点
 -DataTransfer 对象：退拽对象用来传递的媒介，使用一般为Event.dataTransfer。
 -draggable 属性：就是标签元素要设置draggable=true，否则不会有效果，例如：
 
-·
+···
 <div title="拖拽我" draggable="true">列表1</div>
-·
+···
 -ondragstart 事件：当拖拽元素开始被拖拽的时候触发的事件，此事件作用在被拖曳元素上
 
 -ondragenter 事件：当拖曳元素进入目标元素的时候触发的事件，此事件作用在目标元素上
@@ -22,6 +22,6 @@ HTML5提供专门的拖拽与拖放的API，这里提供给大家一个例子，
 
 -Event.effectAllowed 属性：就是拖拽的效果。
 
-##三、相关实例
+### 三、相关实例
 
 为了便于理解上面的粗体的事件啊对象啊什么的，做了个很简单的[demo](http://www.renjie.net.cn/example/dragDiv/)页面。

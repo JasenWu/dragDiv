@@ -102,7 +102,7 @@
   <h3 class="text-center">
     请尝试拖拽下图中的色块
   </p>
-  <br />
+  <hr />
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 panel-wrap" title="拖拽我" draggable="true">
@@ -149,29 +149,15 @@
 
 </body>
 <script>
-  var eleDustbin = $(".dustbin")[0],
-    eleDrags = $(".panel-wrap"),
+  var eleDrags = $(".panel-wrap"),
     lDrags = eleDrags.length,
     eleDragIndex = 0, //拖拽元素的索引
     targetIndex = 0, //目标元素的索引
     moveBtn = '<div class="resize-handle" draggable="true"></div>',
     eleDrag = null;
 
-  Number.prototype.toPercent = function() {
-    return (Math.round(this * 100) / 100).toFixed(2) + '%';
-  }
 
-
-  function getMoveBtn(parent) {
-    var isHave = parent.find(".resize-handle").length >= 1 ? true : false;
-    if (isHave) {
-      return parent.find(".resize-handle");
-    } else {
-      return null;
-    }
-  }
   for (var i = 0; i < lDrags; i++) {
-
     eleDrags[i].onclick = function(e) { /*拖拽元素被选择*/
       var offset = $(this).offset();
       var width = $(this).width();
@@ -179,9 +165,6 @@
       console.log("offset", offset);
       console.log("csswidth", $(this).css("width", "20%"));
     };
-
-
-
 
 
     eleDrags[i].onmouseover = function() { /*拖拽元素被选择*/
